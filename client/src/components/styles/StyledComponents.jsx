@@ -11,3 +11,7 @@ export const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
+export const BouncingSkeleton = () => {
+  
+}
