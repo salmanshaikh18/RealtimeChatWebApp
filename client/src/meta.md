@@ -655,3 +655,100 @@ Here’s an example that demonstrates how to use `Suspense` with `React.lazy`:
 - **Data Fetching**: Future versions of React are expected to integrate data fetching capabilities with `Suspense`, further simplifying asynchronous data handling.
 
 In summary, `Suspense` is a valuable tool in React for managing asynchronous operations, particularly for lazy loading components and improving the user experience by providing visual feedback during loading times.
+
+
+---
+
+
+## memo
+
+In React, `memo` is a higher-order component (HOC) used to optimize the performance of functional components. It prevents unnecessary re-renders by memoizing the result of a component, i.e., it only re-renders the component if its props change. Here's a detailed explanation of what `memo` is, its uses, and how to use it effectively in your React applications.
+
+### What is `memo`?
+
+`React.memo` is a function that takes a component and returns a new component that only re-renders if its props have changed. This is similar to `PureComponent` for class components but is used for functional components.
+
+### Why Use `memo`?
+
+1. **Performance Optimization**: By preventing unnecessary re-renders, `memo` can improve the performance of your application, especially for components that receive the same props frequently.
+2. **Avoid Unnecessary Computations**: For components with expensive computations or complex rendering logic, memoization can save computational resources by reusing the previous render's result if the props have not changed.
+
+### How to Use `memo`
+
+#### Basic Usage
+
+Here’s how you can use `React.memo` to memoize a functional component:
+
+```javascript
+import React, { memo } from 'react';
+
+const MyComponent = (props) => {
+  console.log('Rendering MyComponent');
+  return <div>{props.value}</div>;
+};
+
+export default memo(MyComponent);
+```
+
+In this example, `MyComponent` will only re-render if its `props.value` changes. If `props.value` remains the same between renders, `React.memo` will skip the re-render.
+
+#### Example with a Parent Component
+
+To see `React.memo` in action, consider a parent component that updates its state frequently:
+
+```javascript
+import React, { useState } from 'react';
+import MyComponent from './MyComponent';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState('Hello');
+
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setText(text + '!')}>Update Text</button>
+      <MyComponent value={text} />
+    </div>
+  );
+}
+
+export default App;
+```
+
+- **Explanation**: 
+  - Clicking the "Increment" button updates the `count` state, but `MyComponent` will not re-render because its `value` prop (`text`) has not changed.
+  - Clicking the "Update Text" button updates the `text` state, causing `MyComponent` to re-render since its `value` prop has changed.
+
+### Custom Comparison Function
+
+By default, `React.memo` performs a shallow comparison of props. If you need a deeper comparison, you can pass a custom comparison function as the second argument to `memo`:
+
+```javascript
+const MyComponent = (props) => {
+  console.log('Rendering MyComponent');
+  return <div>{props.value}</div>;
+};
+
+function areEqual(prevProps, nextProps) {
+  return prevProps.value === nextProps.value;
+}
+
+export default memo(MyComponent, areEqual);
+```
+
+- **areEqual Function**: This function takes the previous and next props and returns `true` if they are equal and `false` otherwise. If the function returns `true`, `MyComponent` will not re-render.
+
+### When Not to Use `memo`
+
+1. **Cheap Components**: If your component is simple and rendering it is cheap, using `memo` might introduce unnecessary complexity without significant performance gains.
+2. **Frequent Prop Changes**: If your component's props change frequently, the overhead of the comparison might outweigh the benefits of avoiding re-renders.
+
+### Summary
+
+- **What it is**: `React.memo` is a higher-order component that memoizes functional components to prevent unnecessary re-renders.
+- **Why use it**: It optimizes performance by avoiding re-renders for components that receive the same props frequently.
+- **How to use it**: Wrap your functional component with `React.memo`. Optionally, provide a custom comparison function for more complex prop comparisons.
+- **When to avoid**: Avoid using `memo` for simple, inexpensive components or components with frequently changing props.
+
+Using `React.memo` effectively can help you optimize the performance of your React applications, particularly in cases where components have complex rendering logic or are expensive to render.
