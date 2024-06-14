@@ -394,6 +394,10 @@ By organizing your Redux functionality into these folders, you can maintain a cl
   - `authService.js`: Functions for making authentication API calls.
   - `userService.js`: Functions for fetching user data from an API.
 
+### 11. **6pp**
+
+- Used for Validation
+
 ### Summary
 - **src**: Main source code folder.
 - **components**: Reusable UI elements.
