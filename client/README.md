@@ -30,3 +30,13 @@
 
 14. Admin Dashboard to see users, messages, and chats ( Only Accessible with a Secret key)
 
+
+---
+
+## Dependencies
+
+1. mui (React UI Framework)
+
+```bash
+npm install @mui/material @emotion/react @emotion/styled
+```
