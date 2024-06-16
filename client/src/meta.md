@@ -752,3 +752,95 @@ export default memo(MyComponent, areEqual);
 - **When to avoid**: Avoid using `memo` for simple, inexpensive components or components with frequently changing props.
 
 Using `React.memo` effectively can help you optimize the performance of your React applications, particularly in cases where components have complex rendering logic or are expensive to render.
+
+
+---
+
+
+## onContextMenu
+
+Sure, let's break down what `<div onContextMenu={(e) => e.preventDefault()}><App /></div>` does and explain the `onContextMenu` event in simple terms.
+
+### `onContextMenu` Event
+
+#### What it is
+- **`onContextMenu`**: This is an event handler in React that gets triggered when a user attempts to open a context menu. A context menu typically appears when you right-click on an element.
+
+#### Its Role
+- **Default Behavior**: By default, right-clicking on an element opens the browser's context menu.
+- **Custom Behavior**: By using `onContextMenu`, you can control what happens when the user right-clicks. This is useful if you want to display a custom context menu or prevent the default one from appearing.
+
+#### Uses
+- **Custom Context Menus**: Create your own context menus with specific options relevant to your application.
+- **Prevent Default Actions**: Stop the default context menu from appearing, which might be necessary in some custom UI designs or applications like games, graphics editors, or certain web apps where the default context menu would be disruptive.
+
+### Explanation of the Code
+
+```jsx
+<div onContextMenu={(e) => e.preventDefault()}>
+  <App />
+</div>
+```
+
+#### What it Does
+1. **`<div onContextMenu={(e) => e.preventDefault()}>`**: This line adds an `onContextMenu` event handler to a `<div>`.
+   - **`onContextMenu={(e) => e.preventDefault()}`**: This part says that when the `onContextMenu` event is triggered (when the user right-clicks), it will execute the function `(e) => e.preventDefault()`.
+     - **`(e) => e.preventDefault()`**: This function takes the event object `e` and calls `e.preventDefault()`. The `preventDefault()` method stops the browser's default behavior, which in this case is showing the context menu.
+
+2. **`<App />`**: This is your main application component that is wrapped inside the `<div>`.
+
+#### Purpose
+- **Preventing Default Context Menu**: The main purpose of this code is to prevent the default context menu from appearing when the user right-clicks anywhere inside the `<div>`, which includes the entire `<App />` component.
+
+### Use Cases
+
+1. **Custom User Interfaces**: When you want to provide a custom right-click menu with specific options relevant to your app.
+2. **Web Applications**: In apps like games or graphic editors where the default context menu might interfere with the user experience.
+3. **Enhanced User Experience**: To offer a tailored user experience that aligns with the functionality of your web application.
+
+### Example Scenario
+
+Imagine you have a drawing application. You don't want users to see the browser's default context menu because it might confuse them or provide irrelevant options. Instead, you want to show a custom menu with options like "Undo", "Redo", "Save", etc. You can use `onContextMenu` to handle this.
+
+Here's a more complete example demonstrating this idea:
+
+```jsx
+import React, { useState } from 'react';
+
+const App = () => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    setMenuPosition({ x: e.pageX, y: e.pageY });
+    setShowMenu(true);
+  };
+
+  const handleClick = () => {
+    setShowMenu(false);
+  };
+
+  return (
+    <div onContextMenu={handleContextMenu} onClick={handleClick} style={{ height: '100vh', position: 'relative' }}>
+      <h1>Right-click to see the custom menu</h1>
+      {showMenu && (
+        <ul style={{ position: 'absolute', top: menuPosition.y, left: menuPosition.x, listStyle: 'none', padding: '10px', backgroundColor: 'white', boxShadow: '0px 0px 5px rgba(0,0,0,0.3)' }}>
+          <li onClick={() => alert('Option 1 clicked')}>Option 1</li>
+          <li onClick={() => alert('Option 2 clicked')}>Option 2</li>
+          <li onClick={() => alert('Option 3 clicked')}>Option 3</li>
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default App;
+```
+
+In this example:
+- **Custom Context Menu**: A custom menu is displayed when the user right-clicks inside the `<div>`.
+- **Prevent Default**: The default context menu is prevented from appearing.
+- **Menu Visibility**: The custom menu is hidden when the user clicks anywhere else.
+
+Using `onContextMenu` effectively can greatly enhance the interactivity and user experience of your React applications.

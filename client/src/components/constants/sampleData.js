@@ -1,4 +1,4 @@
-export const samepleChats = [
+export const sampleChats = [
   {
     avatar: ["https://www.w3schools.com/howto/img_avatar.png"],
     name: "John Doe",
